@@ -55,8 +55,6 @@ set(PUBLIC_HEADER_FILES
 
 set(DOXY_HEADER_FILES ${PUBLIC_HEADER_FILES})
 
-include_directories("${CMAKE_CURRENT_BINARY_DIR}")
-
 if (NOT NO_LIB)
 
     # Compile objs first for both the CPU and GPU libs -----
@@ -66,6 +64,18 @@ if (NOT NO_LIB)
             ${PRIVATE_HEADER_FILES}
             ${PUBLIC_HEADER_FILES}
     )
+
+    target_include_directories(vtr_obj
+        PRIVATE
+            ${OpenSubdiv_SOURCE_DIR}/opensubdiv
+            ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    osd_target_compile_definitions(vtr_obj)
+    osd_target_compile_features(vtr_obj)
+    osd_target_compile_options(vtr_obj)
+    osd_target_include_directories(vtr_obj)
+    osd_target_link_system_libraries(vtr_obj)
+    osd_target_warning_options(vtr_obj)
 
     set_target_properties(vtr_obj
         PROPERTIES
@@ -81,7 +91,7 @@ install(
     FILES
         ${PUBLIC_HEADER_FILES}
     DESTINATION
-        "${CMAKE_INCDIR_BASE}/vtr"
+        "${CMAKE_INSTALL_INCLUDEDIR}/opensubdiv/opensubdiv/vtr"
     PERMISSIONS
         OWNER_READ
         GROUP_READ

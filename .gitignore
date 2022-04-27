@@ -1,5 +1,7 @@
 
 # ignore build files
+/build
+/out
 /build/*
 /inst*
 

@@ -22,9 +22,9 @@
 #   language governing permissions and limitations under the Apache License.
 #
 
-if( APPLE OR UNIX )
-    add_definitions(-fPIC)
-endif()
+# if( APPLE OR UNIX )
+#     add_definitions(-fPIC)
+# endif()
 
 list(APPEND GLLOADER_SOURCE_FILES
     glLoader.cpp
@@ -37,16 +37,43 @@ list(APPEND GLLOADER_HEADER_FILES
     khrplatform.h
 )
 
-include_directories(
-    "${OPENGL_LOADER_INCLUDE_DIRS}"
-)
+# include_directories(
+#     "${OPENGL_LOADER_INCLUDE_DIRS}"
+# )
 
-list(APPEND PLATFORM_LIBRARIES
-    "${OPENGL_LOADER_LIBRARIES}"
-)
+# list(APPEND PLATFORM_LIBRARIES
+#     "${OPENGL_LOADER_LIBRARIES}"
+# )
 
 add_library(glLoader_obj
     OBJECT
         ${GLLOADER_SOURCE_FILES}
         ${GLLOADER_HEADER_FILES}
 )
+
+osd_target_compile_definitions(glLoader_obj)
+osd_target_compile_features(glLoader_obj)
+osd_target_compile_options(glLoader_obj)
+osd_target_include_directories(glLoader_obj)
+osd_target_link_system_libraries(glLoader_obj)
+osd_target_warning_options(glLoader_obj)
+
+target_include_directories(glLoader_obj
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+)
+
+if( GLEW_FOUND AND NOT NO_GLEW )
+    target_link_libraries(glLoader_obj
+        PUBLIC
+            GLEW::GLEW
+            OpenGL::GL
+            ${CMAKE_DL_LIBS}
+    )
+elseif( OPENGL_FOUND AND NOT NO_OPENGL )
+    target_link_libraries(glLoader_obj
+        PUBLIC
+            OpenGL::GL
+            ${CMAKE_DL_LIBS}
+    )
+endif()

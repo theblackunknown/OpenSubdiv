@@ -66,7 +66,7 @@ set(OPENMP_PUBLIC_HEADERS
     ompKernel.h
 )
 
-if(OPENMP_FOUND )
+if(OPENMP_FOUND AND NOT NO_OMP)
     list(APPEND CPU_SOURCE_FILES
         ompEvaluator.cpp
         ompKernel.cpp
@@ -74,9 +74,9 @@ if(OPENMP_FOUND )
 
     list(APPEND PUBLIC_HEADER_FILES ${OPENMP_PUBLIC_HEADERS})
 
-    if (CMAKE_COMPILER_IS_GNUCXX)
-        list(APPEND PLATFORM_CPU_LIBRARIES gomp)
-    endif()
+    # if (CMAKE_COMPILER_IS_GNUCXX)
+    #     list(APPEND PLATFORM_CPU_LIBRARIES gomp)
+    # endif()
 endif()
 
 list(APPEND DOXY_HEADER_FILES ${OPENMP_PUBLIC_HEADERS})
@@ -87,8 +87,8 @@ set(TBB_PUBLIC_HEADERS
     tbbKernel.h
 )
 
-if( TBB_FOUND )
-    include_directories("${TBB_INCLUDE_DIR}")
+if( TBB_FOUND AND NOT NO_TBB)
+    # include_directories("${TBB_INCLUDE_DIR}")
 
     list(APPEND CPU_SOURCE_FILES
         tbbEvaluator.cpp
@@ -97,13 +97,13 @@ if( TBB_FOUND )
 
     list(APPEND PUBLIC_HEADER_FILES ${TBB_PUBLIC_HEADERS})
 
-    if (CMAKE_COMPILER_IS_GNUCXX)
-        list(APPEND PLATFORM_CPU_LIBRARIES gomp)
-    endif()
+    # if (CMAKE_COMPILER_IS_GNUCXX)
+    #     list(APPEND PLATFORM_CPU_LIBRARIES gomp)
+    # endif()
 
-    list(APPEND PLATFORM_CPU_LIBRARIES
-        ${TBB_LIBRARIES}
-    )
+    # list(APPEND PLATFORM_CPU_LIBRARIES
+    #     ${TBB_LIBRARIES}
+    # )
 endif()
 
 list(APPEND DOXY_HEADER_FILES ${TBB_PUBLIC_HEADERS})
@@ -151,7 +151,7 @@ set(GL_4_2_PUBLIC_HEADERS
     glXFBEvaluator.h
 )
 
-if( OPENGL_4_2_FOUND )
+if(OpenGL_VERSION VERSION_GREATER_EQUAL 4.2)
     list(APPEND GPU_SOURCE_FILES
         glXFBEvaluator.cpp
     )
@@ -159,9 +159,9 @@ if( OPENGL_4_2_FOUND )
     list(APPEND KERNEL_FILES
         glslXFBKernel.glsl
     )
-    list(APPEND PLATFORM_GPU_LIBRARIES
-        ${OPENGL_LOADER_LIBRARIES}
-    )
+#     list(APPEND PLATFORM_GPU_LIBRARIES
+#         ${OPENGL_LOADER_LIBRARIES}
+#     )
 endif()
 
 list(APPEND DOXY_HEADER_FILES ${GL_4_2_PUBLIC_HEADERS})
@@ -174,7 +174,7 @@ set(GL_4_3_PUBLIC_HEADERS
     glComputeEvaluator.h
 )
 
-if( OPENGL_4_3_FOUND )
+if(OpenGL_VERSION VERSION_GREATER_EQUAL 4.3)
     list(APPEND GPU_SOURCE_FILES
         glComputeEvaluator.cpp
     )
@@ -182,9 +182,9 @@ if( OPENGL_4_3_FOUND )
     list(APPEND KERNEL_FILES
         glslComputeKernel.glsl
     )
-    list(APPEND PLATFORM_GPU_LIBRARIES
-        ${OPENGL_LOADER_LIBRARIES}
-    )
+    # list(APPEND PLATFORM_GPU_LIBRARIES
+    #     ${OPENGL_LOADER_LIBRARIES}
+    # )
 endif()
 
 list(APPEND DOXY_HEADER_FILES ${GL_4_3_PUBLIC_HEADERS})
@@ -200,7 +200,7 @@ set(DXSDK_PUBLIC_HEADERS
     d3d11Mesh.h
     hlslPatchShaderSource.h
 )
-if( DXSDK_FOUND )
+if( DXSDK_FOUND AND NOT NO_DX)
     list(APPEND GPU_SOURCE_FILES
         cpuD3D11VertexBuffer.cpp
         d3d11ComputeEvaluator.cpp
@@ -221,9 +221,9 @@ if( DXSDK_FOUND )
         hlslPatchGregoryTriangle.hlsl
         hlslPatchLegacy.hlsl
     )
-    list(APPEND PLATFORM_GPU_LIBRARIES
-        ${DXSDK_LIBRARIES}
-    )
+    # list(APPEND PLATFORM_GPU_LIBRARIES
+    #     ${DXSDK_LIBRARIES}
+    # )
 endif()
 
 list(APPEND DOXY_HEADER_FILES ${DXSDK_PUBLIC_HEADERS})
@@ -240,8 +240,7 @@ set(METAL_PUBLIC_HEADERS
     mtlCommon.h
 )
 
-
-if( METAL_FOUND )
+if( METAL_FOUND AND NOT NO_METAL )
     set(METAL_SOURCE_FILES
         mtlVertexBuffer.mm
         mtlComputeEvaluator.mm
@@ -251,16 +250,13 @@ if( METAL_FOUND )
         mtlPatchShaderSource.mm
     )
 
-    set_source_files_properties(
-        ${METAL_SOURCE_FILES}
-        PROPERTIES
-        COMPILE_FLAGS
-        "-fobjc-arc")
+    # set_source_files_properties(
+    #     ${METAL_SOURCE_FILES}
+    #     PROPERTIES
+    #     COMPILE_FLAGS
+    #     "-fobjc-arc")
 
     list(APPEND GPU_SOURCE_FILES ${METAL_SOURCE_FILES})
-
-    
-
     list(APPEND PUBLIC_HEADER_FILES ${METAL_PUBLIC_HEADERS})
     list(APPEND KERNEL_FILES
        mtlComputeKernel.metal
@@ -273,9 +269,9 @@ if( METAL_FOUND )
        mtlPatchGregoryTriangle.metal
        mtlPatchLegacy.metal
     )
-    list(APPEND PLATFORM_GPU_LIBRARIES
-        ${METAL_LIBRARIES}
-    )
+    # list(APPEND PLATFORM_GPU_LIBRARIES
+    #     ${METAL_LIBRARIES}
+    # )
 endif()
 
 list(APPEND DOXY_HEADER_FILES ${METAL_PUBLIC_HEADERS})
@@ -289,7 +285,7 @@ set(OPENCL_PUBLIC_HEADERS
     opencl.h
 )
 
-if ( OPENCL_FOUND )
+if ( OPENCL_FOUND AND NOT NO_OPENCL )
     list(APPEND GPU_SOURCE_FILES
         clEvaluator.cpp
         clPatchTable.cpp
@@ -299,10 +295,10 @@ if ( OPENCL_FOUND )
     list(APPEND KERNEL_FILES
         clKernel.cl
     )
-    list(APPEND PLATFORM_GPU_LIBRARIES
-        ${OPENCL_LIBRARIES}
-    )
-    include_directories( "${OPENCL_INCLUDE_DIRS}" )
+    # list(APPEND PLATFORM_GPU_LIBRARIES
+    #     ${OPENCL_LIBRARIES}
+    # )
+    # include_directories( "${OPENCL_INCLUDE_DIRS}" )
     if ( OPENGL_FOUND )
         list(APPEND GPU_SOURCE_FILES clGLVertexBuffer.cpp)
         list(APPEND PUBLIC_HEADER_FILES clGLVertexBuffer.h)
@@ -328,7 +324,7 @@ set(CUDA_PUBLIC_HEADERS
     cudaVertexBuffer.h
 )
 
-if( CUDA_FOUND )
+if( CUDA_FOUND AND NOT NO_CUDA )
     list(APPEND GPU_SOURCE_FILES
         cudaEvaluator.cpp
         cudaPatchTable.cpp
@@ -364,7 +360,7 @@ list(APPEND DOXY_HEADER_FILES ${CUDA_PUBLIC_HEADERS})
 
 osd_stringify("${KERNEL_FILES}" INC_FILES)
 
-include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+# include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 #-------------------------------------------------------------------------------
 source_group("Kernels" FILES ${KERNEL_FILES})
@@ -379,6 +375,19 @@ add_library(osd_cpu_obj
         ${PUBLIC_HEADER_FILES}
 )
 
+target_include_directories(osd_cpu_obj
+    PRIVATE
+        ${OpenSubdiv_SOURCE_DIR}/opensubdiv
+        ${CMAKE_CURRENT_BINARY_DIR}
+)
+osd_target_compile_definitions(osd_cpu_obj)
+osd_target_compile_features(osd_cpu_obj)
+osd_target_compile_options(osd_cpu_obj)
+osd_target_include_directories(osd_cpu_obj)
+osd_target_link_system_libraries(osd_cpu_obj)
+osd_target_link_cpu_dependencies_libraries(osd_cpu_obj)
+osd_target_warning_options(osd_cpu_obj)
+
 set_target_properties(osd_cpu_obj
     PROPERTIES
         FOLDER "opensubdiv"
@@ -392,6 +401,20 @@ if( GPU_SOURCE_FILES )
             ${PUBLIC_HEADER_FILES}
             ${INC_FILES}
     )
+
+    target_include_directories(osd_gpu_obj
+        PRIVATE
+            ${OpenSubdiv_SOURCE_DIR}/opensubdiv
+            ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    osd_target_compile_definitions(osd_gpu_obj)
+    osd_target_compile_features(osd_gpu_obj)
+    osd_target_compile_options(osd_gpu_obj)
+    osd_target_include_directories(osd_gpu_obj)
+    osd_target_link_system_libraries(osd_gpu_obj)
+    osd_target_link_gpu_dependencies_libraries(osd_gpu_obj)
+    osd_target_warning_options(osd_gpu_obj)
+
     set_target_properties(osd_gpu_obj
         PROPERTIES
             FOLDER "opensubdiv"
@@ -404,7 +427,7 @@ install(
     FILES
         ${PUBLIC_HEADER_FILES}
     DESTINATION
-        "${CMAKE_INCDIR_BASE}/osd"
+        "${CMAKE_INSTALL_INCLUDEDIR}/opensubdiv/osd"
     PERMISSIONS
         OWNER_READ
         GROUP_READ

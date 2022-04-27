@@ -85,6 +85,17 @@ if (NOT NO_LIB)
             ${PUBLIC_HEADER_FILES}
     )
 
+    target_include_directories(far_obj
+        PRIVATE
+            ${OpenSubdiv_SOURCE_DIR}/opensubdiv
+    )
+    osd_target_compile_definitions(far_obj)
+    osd_target_compile_features(far_obj)
+    osd_target_compile_options(far_obj)
+    osd_target_include_directories(far_obj)
+    osd_target_link_system_libraries(far_obj)
+    osd_target_warning_options(far_obj)
+
     set_target_properties(far_obj
         PROPERTIES
             FOLDER "opensubdiv"
@@ -99,7 +110,7 @@ install(
     FILES
         ${PUBLIC_HEADER_FILES}
     DESTINATION
-        "${CMAKE_INCDIR_BASE}/far"
+        "${CMAKE_INSTALL_INCLUDEDIR}/opensubdiv/opensubdiv/far"
     PERMISSIONS
         OWNER_READ
         GROUP_READ

@@ -1,0 +1,41 @@
+function(osd_target_link_gpu_dependencies_libraries target)
+    target_link_libraries(${target}
+        PRIVATE
+            $<$<BOOL:${DXSDK_FOUND}>:OpenGL::GL>
+            $<$<BOOL:${OPENCL_FOUND}>:OpenCL::OpenCL>
+    )
+    if(OPENGL_FOUND)
+        target_link_libraries(${target}
+            PRIVATE
+                OpenGL::GL
+                $<$<BOOL:${GLEW_FOUND}>:GLEW::GLEW>
+                ${CMAKE_DL_LIBS}
+        )
+    elseif(OPENGLES_FOUND)
+        target_include_directories(${target}
+            PRIVATE
+                ${OPENGLES_INCLUDE_DIR}
+        )
+        target_link_libraries(${target}
+            PRIVATE
+                ${OPENGLES_LIBRARIES}
+        )
+    endif()
+    if(DXSDK_FOUND)
+        target_include_directories(${target}
+            PRIVATE
+                ${DXSDK_INCLUDE_DIR}
+        )
+        target_link_libraries(${target}
+            PRIVATE
+                ${DXSDK_LIBRARIES}
+        )
+    endif()
+    if(METAL_FOUND)
+        target_link_libraries(${target}
+            PRIVATE
+                "-framework Metal"
+                "-framework Foundation"
+        )
+    endif()
+endfunction()
