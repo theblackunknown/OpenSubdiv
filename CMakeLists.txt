@@ -870,7 +870,7 @@ endmacro()
 # # use OPENSUBDIV_INCLUDE_DIR.
 
 # # example: if you have already installed opensubdiv libs in this cmake setup,
-# # set (OPENSUBDIV_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INCDIR_BASE})
+# # set (OPENSUBDIV_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 
 # if (NOT OPENSUBDIV_INCLUDE_DIR)
 #     set(OPENSUBDIV_INCLUDE_DIR "${PROJECT_SOURCE_DIR}")
