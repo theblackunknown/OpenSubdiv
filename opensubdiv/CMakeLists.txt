@@ -148,7 +148,7 @@ if (NOT NO_LIB)
     osd_target_link_cpu_dependencies_libraries(osd_static_cpu)
     osd_target_warning_options(osd_static_cpu)
 
-    install( TARGETS osd_static_cpu )
+    install( TARGETS osd_static_cpu EXPORT opensubdiv-targets )
 
     if( OSD_GPU )
         add_library(osd_static_gpu 
@@ -174,7 +174,7 @@ if (NOT NO_LIB)
         osd_target_link_gpu_dependencies_libraries(osd_static_gpu)
         osd_target_warning_options(osd_static_gpu)
 
-        install( TARGETS osd_static_gpu )
+        install( TARGETS osd_static_gpu EXPORT opensubdiv-targets )
     endif()
 
 
@@ -216,7 +216,7 @@ if (NOT NO_LIB)
         osd_target_link_cpu_dependencies_libraries(osd_dynamic_cpu)
         osd_target_warning_options(osd_dynamic_cpu)
 
-        install( TARGETS osd_dynamic_cpu )
+        install( TARGETS osd_dynamic_cpu EXPORT opensubdiv-targets )
 
         #---------------------------------------------------
         if( OSD_GPU )
@@ -259,7 +259,7 @@ if (NOT NO_LIB)
                     osd_dynamic_cpu
             )
 
-            install( TARGETS osd_dynamic_gpu )
+            install( TARGETS osd_dynamic_gpu EXPORT opensubdiv-targets )
         endif()
 
     endif()
@@ -325,7 +325,7 @@ if (NOT NO_LIB)
         osd_target_link_gpu_dependencies_libraries(osd_static_framework)
         osd_target_warning_options(osd_static_framework)
 
-        install( TARGETS osd_static_framework
+        install( TARGETS osd_static_framework EXPORT opensubdiv-targets
              FRAMEWORK DESTINATION "${CMAKE_INSTALL_LIBDIR}"
              PUBLIC_HEADER  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/opensubdiv")
 
@@ -375,7 +375,7 @@ if (NOT NO_LIB)
             osd_target_link_gpu_dependencies_libraries(osd_dynamic_framework)
             osd_target_warning_options(osd_dynamic_framework)
 
-            install( TARGETS osd_dynamic_framework
+            install( TARGETS osd_dynamic_framework EXPORT opensubdiv-targets
                  FRAMEWORK DESTINATION "${CMAKE_INSTALL_LIBDIR}"
                  PUBLIC_HEADER  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/opensubdiv"
                  PRIVATE_HEADER  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/opensubdiv"

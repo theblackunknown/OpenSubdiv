@@ -206,6 +206,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 include(CTest)
 include(GNUInstallDirs)
 include(CMakePrintHelpers)
+include(CMakePackageConfigHelpers)
 
 include(cmake/osd_find_opengl_version.cmake)
 include(cmake/osd_target_compile_definitions.cmake)
@@ -900,3 +901,28 @@ endif()
 if (NOT NO_DOC)
     add_subdirectory(documentation)
 endif()
+
+#
+# CMake Config.
+#
+
+configure_package_config_file(
+    opensubdiv-config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/opensubdiv-config.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}
+)
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/opensubdiv-config-version.cmake
+    VERSION ${OpenSubdiv_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(EXPORT opensubdiv-targets
+    NAMESPACE OpenSubdiv::
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME})
+
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/opensubdiv-config.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/opensubdiv-config-version.cmake
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}
+)
